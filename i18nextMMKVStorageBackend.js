@@ -1,7 +1,7 @@
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
 	typeof define === 'function' && define.amd ? define(factory) :
-	(global.i18nextAsyncStorageBackend = factory());
+	(global.i18nextMMKVStorageBackend = factory());
 }(this, (function () { 'use strict';
 
 var arr = [];
@@ -19,27 +19,42 @@ function defaults(obj) {
   return obj;
 }
 
+const ACCESSIBLE = {
+  WHEN_UNLOCKED: 'AccessibleWhenUnlocked',
+  AFTER_FIRST_UNLOCK: 'AccessibleAfterFirstUnlock',
+  ALWAYS: 'AccessibleAlways',
+  WHEN_PASSCODE_SET_THIS_DEVICE_ONLY: 'AccessibleWhenPasscodeSetThisDeviceOnly',
+  WHEN_UNLOCKED_THIS_DEVICE_ONLY: 'AccessibleWhenUnlockedThisDeviceOnly',
+  AFTER_FIRST_UNLOCK_THIS_DEVICE_ONLY: 'AccessibleAfterFirstUnlockThisDeviceOnly',
+  ALWAYS_THIS_DEVICE_ONLY: 'AccessibleAlwaysThisDeviceOnly',
+};
+
+const MODES = {
+  SINGLE_PROCESS: 1,
+  MULTI_PROCESS: 2
+};
+
+const DATA_TYPES = Object.freeze({
+  STRING: 1,
+  NUMBER: 2,
+  BOOL: 3,
+  MAP: 4,
+  ARRAY: 5
+});
+
+const Loader = require('./src/loader').default;
+
+const MMKVStorage = {
+  Loader:Loader,
+  MODES: MODES,
+  ACCESSIBLE : ACCESSIBLE
+};
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 // get from whatever version of react native that is being used.
-var AsyncStorage = (require('react-native') || {}).AsyncStorage;
-
-var storage = {
-  setItem: function setItem(key, value) {
-    if (AsyncStorage) {
-      return AsyncStorage.setItem(key, value);
-    }
-  },
-  getItem: function getItem(key, value) {
-    if (AsyncStorage) {
-      return AsyncStorage.getItem(key, value);
-    }
-    return undefined;
-  }
-};
-
 function getDefaults() {
   return {
     prefix: 'i18next_res_',
@@ -66,6 +81,11 @@ var Cache = function () {
 
       this.services = services;
       this.options = defaults(options, this.options || {}, getDefaults());
+      if (options.instance) {
+        this.MMKV = options.instance;
+      } else {
+        this.MMKV = new MMKVStorage.Loader().initialize();
+      }
     }
   }, {
     key: 'read',
@@ -75,11 +95,11 @@ var Cache = function () {
       var store = {};
       var nowMS = new Date().getTime();
 
-      if (!AsyncStorage) {
+      if (!this.MMKV) {
         return callback(null, null);
       }
 
-      storage.getItem('' + this.options.prefix + language + '-' + namespace).then(function (local) {
+      this.MMKV.getString('' + this.options.prefix + language + '-' + namespace).then(function (local) {
         if (local) {
           local = JSON.parse(local);
           if (
@@ -103,7 +123,7 @@ var Cache = function () {
   }, {
     key: 'save',
     value: function save(language, namespace, data) {
-      if (AsyncStorage) {
+      if (this.MMKV) {
         data.i18nStamp = new Date().getTime();
 
         // language version (if set)
@@ -112,7 +132,7 @@ var Cache = function () {
         }
 
         // save
-        storage.setItem('' + this.options.prefix + language + '-' + namespace, JSON.stringify(data));
+        this.MMKV.setString('' + this.options.prefix + language + '-' + namespace, JSON.stringify(data));
       }
     }
   }]);

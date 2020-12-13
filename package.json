@@ -8,8 +8,8 @@
     "i18next",
     "i18next-backend"
   ],
-  "homepage": "https://github.com/younes200/i18next-mmkv-storage-backend",
-  "bugs": "https://github.com/younes200/i18next-mmkv-storage-backend/issues",
+  "homepage": "https://github.com/ioteam/i18next-mmkv-storage-backend",
+  "bugs": "https://github.com/ioteam/i18next-mmkv-storage-backend/issues",
   "devDependencies": {
     "babel-cli": "6.23.0",
     "babel-core": "6.23.1",
@@ -22,7 +22,6 @@
     "eslint-config-airbnb": "14.1.0",
     "install-peers": "^1.0.3",
     "mkdirp": "0.5.1",
-    "react-native-mmkv-storage": "^0.4.2",
     "rimraf": "2.6.1",
     "rollup": "0.41.4",
     "rollup-plugin-babel": "2.7.1",
