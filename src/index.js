@@ -1,21 +1,7 @@
 import * as utils from './utils';
 
 // get from whatever version of react native that is being used.
-const AsyncStorage = require('@react-native-community/async-storage') || {};
-
-const storage = {
-  setItem(key, value) {
-    if (AsyncStorage) {
-      return AsyncStorage.setItem(key, value);
-    }
-  },
-  getItem(key, value) {
-    if (AsyncStorage) {
-      return AsyncStorage.getItem(key, value);
-    }
-    return undefined;
-  }
-};
+import MMKVStorage from "react-native-mmkv-storage";
 
 function getDefaults() {
   return {
@@ -35,17 +21,23 @@ class Cache {
   init(services, options = {}) {
     this.services = services;
     this.options = utils.defaults(options, this.options || {}, getDefaults());
+    if(options.instance){
+      this.MMKV = options.instance;
+    }else{
+       this.MMKV = new MMKVStorage.Loader().initialize();
+    }
+
   }
 
   read(language, namespace, callback) {
     const store = {};
     const nowMS = new Date().getTime();
 
-    if (!AsyncStorage) {
+    if (!this.MMKV) {
       return callback(null, null);
     }
 
-    storage.getItem(`${this.options.prefix}${language}-${namespace}`)
+    this.MMKV.getString(`${this.options.prefix}${language}-${namespace}`)
       .then(local => {
         if (local) {
           local = JSON.parse(local);
@@ -71,7 +63,7 @@ class Cache {
   }
 
   save(language, namespace, data) {
-    if (AsyncStorage) {
+    if (this.MMKV) {
       data.i18nStamp = new Date().getTime();
 
       // language version (if set)
@@ -80,7 +72,7 @@ class Cache {
       }
 
       // save
-      storage.setItem(`${this.options.prefix}${language}-${namespace}`, JSON.stringify(data));
+      this.MMKV.setString(`${this.options.prefix}${language}-${namespace}`, JSON.stringify(data));
     }
   }
 }
