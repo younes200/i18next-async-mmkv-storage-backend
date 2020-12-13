@@ -4,11 +4,11 @@ This is a i18next cache layer to be used in the browser. It will load and cache 
 
 # Getting started
 
-Source can be loaded via [npm](https://www.npmjs.com/package/i18next-async-mmkv-storage-cache) or [downloaded](https://github.com/younes200/i18next-async-mmkv-storage-cache/blob/master/i18nextAsyncMMKVStorageCache.min.js) from this repo.
+Source can be loaded via [npm](https://www.npmjs.com/package/i18next-mmkv-storage-cache) or [downloaded](https://github.com/younes200/i18next-mmkv-storage-cache/blob/master/i18nextMMKVStorageCache.min.js) from this repo.
 
 ```
 # npm package
-$ npm install i18next-async-storage-backend
+$ npm install i18next-mmkv-storage-backend
 ```
 
 Wiring up with the chained backend:
@@ -16,7 +16,7 @@ Wiring up with the chained backend:
 ```js
 import i18next from 'i18next';
 import Backend from 'i18next-chained-backend';
-import AsyncMMKVStorageBackend from 'i18next-async-mmkv-storage-backend'; // primary use cache
+import MMKVStorageBackend from 'i18next-mmkv-storage-backend'; // primary use cache
 import XHR from 'i18next-xhr-backend'; // fallback xhr load
 
 i18next
@@ -24,7 +24,7 @@ i18next
   .init({
     backend: {
       backends: [
-        AsyncMMKVStorageBackend,  // primary
+        MMKVStorageBackend,  // primary
         XHR                   // fallback
       ],
       backendOptions: [{
@@ -61,7 +61,7 @@ Wiring up a service backend with the chained backend:
 ```js
 import i18next from 'i18next';
 import Backend from 'i18next-chained-backend';
-import AsyncMMKVStorageBackend from 'i18next-async-storage-backend'; // primary use cache
+import MMKVStorageBackend from 'i18next-async-storage-backend'; // primary use cache
 import ServiceBackend from 'i18next-service-backend'; // fallback service backend
 
 const TRANSLATION_BACKEND = 'https://api.spacetranslate.com';
@@ -72,7 +72,7 @@ i18next
   .init({
     backend: {
       backends: [
-        AsyncMMKVStorageBackend,  // primary
+        MMKVStorageBackend,  // primary
         ServiceBackend                   // fallback
       ],
       backendOptions: [{
