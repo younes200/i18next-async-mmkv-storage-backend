@@ -1,6 +1,6 @@
 {
-  "name": "i18next-async-mmkv-storage-backend",
-  "version": "1.0.0",
+  "name": "i18next-mmkv-storage-backend",
+  "version": "1.0.6",
   "description": "caching layer backend for i18next using react native async storage",
   "main": "./index.js",
   "jsnext:main": "dist/es/index.js",
@@ -8,8 +8,8 @@
     "i18next",
     "i18next-backend"
   ],
-  "homepage": "https://github.com/younes200/i18next-async-mmkv-storage-backend",
-  "bugs": "https://github.com/younes200/i18next-async-mmkv-storage-backend/issues",
+  "homepage": "https://github.com/younes200/i18next-mmkv-storage-backend",
+  "bugs": "https://github.com/younes200/i18next-mmkv-storage-backend/issues",
   "dependencies": {},
   "devDependencies": {
     "babel-cli": "6.23.0",
@@ -34,7 +34,7 @@
   },
   "scripts": {
     "clean": "rimraf dist && mkdirp dist",
-    "copy": "cp ./dist/umd/i18nextAsyncMMKVStorageBackend.min.js ./i18nextAsyncMMKVStorageBackend.min.js && cp ./dist/umd/i18nextAsyncMMKVStorageBackend.js ./i18nextAsyncMMKVStorageBackend.js",
+    "copy": "cp ./dist/umd/i18nextMMKVStorageBackend.min.js ./i18nextMMKVStorageBackend.min.js && cp ./dist/umd/i18nextMMKVStorageBackend.js ./i18nextMMKVStorageBackend.js",
     "build:es": "BABEL_ENV=jsnext babel src --out-dir dist/es",
     "build:cjs": "babel src --out-dir dist/commonjs",
     "build:umd": "rollup -c rollup.config.js --format umd && rollup -c rollup.config.js --format umd --uglify",
