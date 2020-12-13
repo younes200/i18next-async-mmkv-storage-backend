@@ -1,10 +1,10 @@
 # Introduction
 
-This is a i18next cache layer to be used in the browser. It will load and cache resources from AsyncStorage and can be used in combination with the [chained backend](https://github.com/i18next/i18next-chained-backend).
+This is a i18next cache layer to be used in the browser. It will load and cache resources from [MMKV](https://github.com/ammarahm-ed/react-native-mmkv-storage) and can be used in combination with the [chained backend](https://github.com/i18next/i18next-chained-backend).
 
 # Getting started
 
-Source can be loaded via [npm](https://www.npmjs.com/package/i18next-async-storage-cache) or [downloaded](https://github.com/timbrandin/i18next-async-storage-cache/blob/master/i18nextAsyncStorageCache.min.js) from this repo.
+Source can be loaded via [npm](https://www.npmjs.com/package/i18next-async-mmkv-storage-cache) or [downloaded](https://github.com/younes200/i18next-async-mmkv-storage-cache/blob/master/i18nextAsyncMMKVStorageCache.min.js) from this repo.
 
 ```
 # npm package
@@ -16,7 +16,7 @@ Wiring up with the chained backend:
 ```js
 import i18next from 'i18next';
 import Backend from 'i18next-chained-backend';
-import AsyncStorageBackend from 'i18next-async-storage-backend'; // primary use cache
+import AsyncMMKVStorageBackend from 'i18next-async-mmkv-storage-backend'; // primary use cache
 import XHR from 'i18next-xhr-backend'; // fallback xhr load
 
 i18next
@@ -24,7 +24,7 @@ i18next
   .init({
     backend: {
       backends: [
-        AsyncStorageBackend,  // primary
+        AsyncMMKVStorageBackend,  // primary
         XHR                   // fallback
       ],
       backendOptions: [{
@@ -61,7 +61,7 @@ Wiring up a service backend with the chained backend:
 ```js
 import i18next from 'i18next';
 import Backend from 'i18next-chained-backend';
-import AsyncStorageBackend from 'i18next-async-storage-backend'; // primary use cache
+import AsyncMMKVStorageBackend from 'i18next-async-storage-backend'; // primary use cache
 import ServiceBackend from 'i18next-service-backend'; // fallback service backend
 
 const TRANSLATION_BACKEND = 'https://api.spacetranslate.com';
@@ -72,7 +72,7 @@ i18next
   .init({
     backend: {
       backends: [
-        AsyncStorageBackend,  // primary
+        AsyncMMKVStorageBackend,  // primary
         ServiceBackend                   // fallback
       ],
       backendOptions: [{
